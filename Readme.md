@@ -10,3 +10,7 @@ This repository contains the source code and datasets for the ACL 2020 paper Scr
 ### Context-Narrative Matching
 <img src="image/matching.png">
 Context-response matching and narrative-response matching are similar.
+
+## Statistics of GraphMovie corpus
+<img src="image/statistics.png">
+
