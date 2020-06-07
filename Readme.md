@@ -4,5 +4,4 @@ This repository contains the source code and datasets for the ACL 2020 paper Scr
 
 ## Model
 
-<img src="image/update.png">
-<img src="image/matching.png">
+<img src="image/update.png"> <img src="image/matching.png">
