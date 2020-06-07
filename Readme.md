@@ -19,3 +19,7 @@ Context-response matching and narrative-response matching are similar.
 
 ## Results
 <img src="image/result.png">
+
+## Dependencies
+Python 3.5
+Tensorflow 1.2
