@@ -16,3 +16,6 @@ Context-response matching and narrative-response matching are similar.
 
 ## An Example Data
 <img src="image/example.png">
+
+## Results
+<img src="image/result.png">
