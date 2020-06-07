@@ -14,3 +14,5 @@ Context-response matching and narrative-response matching are similar.
 ## Statistics of GraphMovie corpus
 <img src="image/statistics.png">
 
+## An Example Data
+<img src="image/example.png">
