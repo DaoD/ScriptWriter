@@ -12,6 +12,9 @@ Keras 2.2.4 <br>
 (1) Unzip the compressed data file to the data directory. <br>
 (2) Python3 ScriptWriter.py
 
+## Remark
+We do not share the vocab.txt in the data currentely due to the copyright issue. We will upload it as soon as possible.
+
 ## Cite
 If you use the code and datasets, please cite the following paper:  
 **"ScriptWriter: Narrative-Guided Script Generation"**  
