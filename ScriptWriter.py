@@ -528,15 +528,15 @@ def train(load=False, model_path=None):
 
 if __name__ == "__main__":
     os.environ['CUDA_VISIBLE_DEVICES'] = "0"
-    is_train = False
+    is_train = True
     if is_train:
         previous_train_modelpath = "./model/"
         train(False, previous_train_modelpath)
     else:
         # check the validation loss obtained in the training process and use the saved model with the smallest validation loss
         previous_train_modelpath = "./model/model.4"
-        # (acc, r2_1, r10_1, r10_2, r10_5, mrr), eva_loss, _ = evaluate(previous_train_modelpath, evaluate_file, output_path="./output/")
-        # print("Loss on test set: %f, Accuracy: %f, R2@1: %f, R10@1: %f, R10@2: %f, R10@5: %f, MRR: %f" % (eva_loss, acc, r2_1, r10_1, r10_2, r10_5, mrr))
+        (acc, r2_1, r10_1, r10_2, r10_5, mrr), eva_loss, _ = evaluate(previous_train_modelpath, evaluate_file, output_path="./output/")
+        print("Loss on test set: %f, Accuracy: %f, R2@1: %f, R10@1: %f, R10@2: %f, R10@5: %f, MRR: %f" % (eva_loss, acc, r2_1, r10_1, r10_2, r10_5, mrr))
 
         # to evaluate multi-turn results, the vocab file is needed
         # evaluate_multi_turns(test_file=evaluate_file, model_path=previous_train_modelpath, output_path="./output/")
