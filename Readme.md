@@ -5,7 +5,7 @@ This repository contains the source code and datasets for the ACL 2020 paper [Sc
 ## Dependencies
 I test the code with the following packages. Other versions may also work, but I'm not sure. <br>
 Python 3.5 <br>
-Tensorflow 1.5 (with GPU supported)<br>
+Tensorflow 1.5 (with GPU support)<br>
 Keras 2.2.4 <br>
 
 ## Usage
