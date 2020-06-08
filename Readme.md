@@ -9,7 +9,7 @@ Tensorflow 1.5 (with GPU supported)<br>
 Keras 2.2.4 <br>
 
 ## Usage
-(1) Unzip the compressed data file to the data directory. <br>
+(1) Unzip the compressed [data file](https://drive.google.com/file/d/1X8qjwAvyc85smlbRHvsWOiLgoeIG8JlN/view?usp=sharing) to the data directory. <br>
 (2) Python3 ScriptWriter.py
 
 ## Remark
