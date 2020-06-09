@@ -126,8 +126,8 @@ class ScripteWriter():
                     u_a_n = feedforward(u_a_n, num_units=[self.hidden_units, self.hidden_units])
                     u_a_n_stack.append(u_a_n)
 
-            u_a_r_stack.extend(u_a_n_stack)  # #for no rp
-            r_a_u_stack.extend(n_a_u_stack)  # #for no rp
+            u_a_r_stack.extend(u_a_n_stack)
+            r_a_u_stack.extend(n_a_u_stack)
 
             u_a_r = tf.stack(u_a_r_stack, axis=-1)
             r_a_u = tf.stack(r_a_u_stack, axis=-1)
@@ -136,8 +136,8 @@ class ScripteWriter():
                 # sim shape [batch, max_sent_len, max_sent_len, 2 * (stack_num + 1)]
                 sim = tf.einsum('biks,bjks->bijs', u_a_r, r_a_u) / tf.sqrt(200.0)
 
-            self_n = tf.nn.l2_normalize(tf.stack(Hn_stack, axis=-1))  # #for no rp
-            self_u = tf.nn.l2_normalize(tf.stack(Hu_stack, axis=-1))  # #for no rp
+            self_n = tf.nn.l2_normalize(tf.stack(Hn_stack, axis=-1))
+            self_u = tf.nn.l2_normalize(tf.stack(Hu_stack, axis=-1))
             with tf.variable_scope('similarity'):
                 self_sim = tf.einsum('biks,bjks->bijs', self_u, self_n)  # [batch * len * len * stack]
                 self_sim = tf.unstack(self_sim, axis=-1, num=self.num_blocks + 1)
