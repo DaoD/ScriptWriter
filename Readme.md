@@ -1,5 +1,7 @@
 # ScriptWriter: Narrative-Guided Script Generation
 
+[![made-with-python](https://img.shields.io/badge/Made%20with-Python-red.svg)](#python)
+
 This repository contains the source code and datasets for the ACL 2020 paper [ScriptWriter: Narrative-Guided Script Generation](http://rali.iro.umontreal.ca/rali/sites/default/files/publis/2005.10331.pdf) by Zhu et al. <br>
 
 ## Update
