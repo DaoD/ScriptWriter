@@ -1,4 +1,4 @@
-outline	珍妮不喜欢回家。为了陪珍妮，甘决定晚点回家。珍妮是甘最好的朋友
+narrative	珍妮不喜欢回家。为了陪珍妮，甘决定晚点回家。珍妮是甘最好的朋友
 script	妈会担心我的
 script	再坐一会！
 script	珍妮为了某种理由不想回家
@@ -6,7 +6,7 @@ script	好，珍妮，我留下来
 script	她是我最特别的朋友
 script	EOS
 
-outline	珍妮不喜欢回家。为了陪珍妮，甘决定晚点回家。珍妮是甘最好的朋友
+narrative	珍妮不喜欢回家。为了陪珍妮，甘决定晚点回家。珍妮是甘最好的朋友
 script	妈会担心我的
 script	再坐一会！
 script	珍妮为了某种理由不想回家
@@ -14,7 +14,7 @@ script	好，珍妮，我留下来
 script	她是我最特别的朋友
 script	EOS
 
-outline	珍妮不喜欢回家。为了陪珍妮，甘决定晚点回家。珍妮是甘最好的朋友
+narrative	珍妮不喜欢回家。为了陪珍妮，甘决定晚点回家。珍妮是甘最好的朋友
 script	妈会担心我的
 script	再坐一会！
 script	珍妮为了某种理由不想回家
@@ -22,7 +22,7 @@ script	好，珍妮，我留下来
 script	她是我最特别的朋友
 script	EOS
 
-outline	珍妮不喜欢回家。为了陪珍妮，甘决定晚点回家。珍妮是甘最好的朋友
+narrative	珍妮不喜欢回家。为了陪珍妮，甘决定晚点回家。珍妮是甘最好的朋友
 script	妈会担心我的
 script	再坐一会！
 script	珍妮为了某种理由不想回家
@@ -30,15 +30,7 @@ script	好，珍妮，我留下来
 script	她是我最特别的朋友
 script	EOS
 
-outline	珍妮不喜欢回家。为了陪珍妮，甘决定晚点回家。珍妮是甘最好的朋友
-script	妈会担心我的
-script	再坐一会！
-script	珍妮为了某种理由不想回家
-script	好，珍妮，我留下来
-script	她是我最特别的朋友
-script	EOS
-
-outline	珍妮不喜欢回家。为了陪珍妮，甘决定晚点回家。珍妮是甘最好的朋友
+narrative	珍妮不喜欢回家。为了陪珍妮，甘决定晚点回家。珍妮是甘最好的朋友
 script	妈会担心我的
 script	再坐一会！
 script	珍妮为了某种理由不想回家
