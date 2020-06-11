@@ -2,10 +2,13 @@
 
 [![made-with-python](https://img.shields.io/badge/Made%20with-Python-red.svg)](#python)
 
+#### News
+- 2020-06-11: We find a minor error in the data thus we upload a new one.
+
 This repository contains the source code and datasets for the ACL 2020 paper [ScriptWriter: Narrative-Guided Script Generation](http://rali.iro.umontreal.ca/rali/sites/default/files/publis/2005.10331.pdf) by Zhu et al. <br>
 
 ## Update
-June 11, We find a minor error in the data thus we upload a new one.
+June 11, 
 
 ## Dependencies
 I test the code with the following packages. Other versions may also work, but I'm not sure. <br>
