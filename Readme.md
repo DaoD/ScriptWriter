@@ -3,7 +3,7 @@
 [![made-with-python](https://img.shields.io/badge/Made%20with-Python-red.svg)](#python)
 
 #### News
-- 2020-06-11: We find a minor error in the data thus we upload a new one. We provide the code for building data filr from text file. You can now generate your own data with the Utils.py.
+- 2020-06-11: We find a minor error in the data thus we upload a new one. We provide the code for building data file from text file. You can now generate your own data with the Utils.py.
 - 2020-06-09: We upload the code and data. Note that we do not share the vocab.txt in the data currentely due to the copyright issue. We will upload it as soon as possible.
 
 ## Abstract
