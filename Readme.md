@@ -2,6 +2,9 @@
 
 This repository contains the source code and datasets for the ACL 2020 paper [ScriptWriter: Narrative-Guided Script Generation](http://rali.iro.umontreal.ca/rali/sites/default/files/publis/2005.10331.pdf) by Zhu et al. <br>
 
+## Update
+June 11, We find a minor error in the data thus we upload a new one.
+
 ## Dependencies
 I test the code with the following packages. Other versions may also work, but I'm not sure. <br>
 Python 3.5 <br>
