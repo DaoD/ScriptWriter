@@ -20,8 +20,8 @@ I test the code with the following packages. Other versions may also work, but I
 - Keras 2.2.4 <br>
 
 ## Usage
-(1) Unzip the compressed [data file](https://drive.google.com/file/d/1X8qjwAvyc85smlbRHvsWOiLgoeIG8JlN/view?usp=sharing) to the data directory. <br>
-(2) Python3 ScriptWriter.py
+- Unzip the compressed [data file](https://drive.google.com/file/d/1X8qjwAvyc85smlbRHvsWOiLgoeIG8JlN/view?usp=sharing) to the data directory. <br>
+- Python3 ScriptWriter.py
 
 ## Citations
 If you use the code and datasets, please cite the following paper:  
