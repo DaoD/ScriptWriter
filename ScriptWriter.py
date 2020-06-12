@@ -6,11 +6,6 @@ import pickle
 import os
 from tqdm import tqdm
 
-UNK = "<UNK>"
-SOS = "<S>"
-EOS = "</S>"
-UNK_ID = 1
-
 embedding_file = "./data/embeddings.pkl"
 train_file = "./data/train.pkl"
 val_file = "./data/dev.pkl"
@@ -55,12 +50,12 @@ class ScripteWriter():
 
     def load(self, previous_modelpath):
         sess = tf.Session()
-        # latest_ckpt = tf.train.latest_checkpoint(previous_modelpath)
+        latest_ckpt = tf.train.latest_checkpoint(previous_modelpath)
         # latest_ckpt = previous_modelpath + "model.4"
-        # print("recover from checkpoint: " + latest_ckpt)
+        print("recover from checkpoint: " + latest_ckpt)
         variables = tf.contrib.framework.get_variables_to_restore()
         saver = tf.train.Saver(variables)
-        saver.restore(sess, previous_modelpath)
+        saver.restore(sess, latest_ckpt)
         return sess
 
     def build(self):
@@ -126,8 +121,8 @@ class ScripteWriter():
                     u_a_n = feedforward(u_a_n, num_units=[self.hidden_units, self.hidden_units])
                     u_a_n_stack.append(u_a_n)
 
-            u_a_r_stack.extend(u_a_n_stack)
-            r_a_u_stack.extend(n_a_u_stack)
+            u_a_r_stack.extend(u_a_n_stack)  # #for no rp
+            r_a_u_stack.extend(n_a_u_stack)  # #for no rp
 
             u_a_r = tf.stack(u_a_r_stack, axis=-1)
             r_a_u = tf.stack(r_a_u_stack, axis=-1)
@@ -136,8 +131,8 @@ class ScripteWriter():
                 # sim shape [batch, max_sent_len, max_sent_len, 2 * (stack_num + 1)]
                 sim = tf.einsum('biks,bjks->bijs', u_a_r, r_a_u) / tf.sqrt(200.0)
 
-            self_n = tf.nn.l2_normalize(tf.stack(Hn_stack, axis=-1))
-            self_u = tf.nn.l2_normalize(tf.stack(Hu_stack, axis=-1))
+            self_n = tf.nn.l2_normalize(tf.stack(Hn_stack, axis=-1))  # #for no rp
+            self_u = tf.nn.l2_normalize(tf.stack(Hu_stack, axis=-1))  # #for no rp
             with tf.variable_scope('similarity'):
                 self_sim = tf.einsum('biks,bjks->bijs', self_u, self_n)  # [batch * len * len * stack]
                 self_sim = tf.unstack(self_sim, axis=-1, num=self.num_blocks + 1)
@@ -424,6 +419,7 @@ def evaluate_multi_turns(test_file, model_path, output_path):
 
 
 def train(load=False, model_path=None):
+    best_val_loss = 100000.0
     config = tf.ConfigProto(allow_soft_placement=True)
     config.gpu_options.allow_growth = True
     epoch = 0
@@ -523,18 +519,20 @@ def train(load=False, model_path=None):
                 pass
 
             print('Epoch No: %d, the train loss is %f, the dev loss is %f' % (epoch + 1, train_loss / step, val_loss / val_step))
-            model.saver.save(sess, "./model/model.{0}".format(epoch + 1))
+            if val_loss / val_step < best_val_loss:
+                best_val_loss = val_loss / val_step
+                model.saver.save(sess, "./model/model.{0}".format(epoch + 1))
+                print("Save model.{}".format(epoch + 1))
             epoch += 1
 
 if __name__ == "__main__":
-    os.environ['CUDA_VISIBLE_DEVICES'] = "0"
-    is_train = True
+    os.environ['CUDA_VISIBLE_DEVICES'] = "1"
+    is_train = False
+    previous_train_modelpath = "./model/"
     if is_train:
-        previous_train_modelpath = "./model/"
         train(False, previous_train_modelpath)
     else:
         # check the validation loss obtained in the training process and use the saved model with the smallest validation loss
-        previous_train_modelpath = "./model/model.4"
         (acc, r2_1, r10_1, r10_2, r10_5, mrr), eva_loss, _ = evaluate(previous_train_modelpath, evaluate_file, output_path="./output/")
         print("Loss on test set: %f, Accuracy: %f, R2@1: %f, R10@1: %f, R10@2: %f, R10@5: %f, MRR: %f" % (eva_loss, acc, r2_1, r10_1, r10_2, r10_5, mrr))
 
