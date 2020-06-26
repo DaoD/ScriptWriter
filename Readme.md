@@ -26,16 +26,19 @@ I test the code with the following packages. Other versions may also work, but I
 ## Citations
 If you use the code and datasets, please cite the following paper:  
 ```
-@inproceedings{zhu-etal-2020-script,
-    title = "ScriptWriter: Narrative-Guided Script Generation",
+@inproceedings{zhu-etal-2020-scriptwriter,
+    title = "{S}cript{W}riter: Narrative-Guided Script Generation",
     author = "Zhu, Yutao  and
       Song, Ruihua  and
       Dou, Zhicheng  and
-      Nie, Jian-Yun  and
+      NIE, Jian-Yun  and
       Zhou, Jin",
     booktitle = "Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics",
     month = jul,
     year = "2020",
+    address = "Online",
     publisher = "Association for Computational Linguistics",
+    url = "https://www.aclweb.org/anthology/2020.acl-main.765",
+    pages = "8647--8657"
 }
 ```
