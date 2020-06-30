@@ -82,7 +82,7 @@ class ScripteWriter():
                 narrative_embeddings = feedforward(narrative_embeddings, num_units=[self.hidden_units, self.hidden_units])
                 Hn_stack.append(narrative_embeddings)
 
-        sim_turns = []
+        Mur, Mun = [], []
         self.decay_factor = []
 
         for utterance, utterance_len in zip(all_utterances, all_utterance_len):
@@ -121,18 +121,21 @@ class ScripteWriter():
                     u_a_n = feedforward(u_a_n, num_units=[self.hidden_units, self.hidden_units])
                     u_a_n_stack.append(u_a_n)
 
-            u_a_r_stack.extend(u_a_n_stack)  # #for no rp
-            r_a_u_stack.extend(n_a_u_stack)  # #for no rp
+            n_a_u_stack.extend(Hn_stack)
+            u_a_n_stack.extend(Hu_stack)
 
             u_a_r = tf.stack(u_a_r_stack, axis=-1)
             r_a_u = tf.stack(r_a_u_stack, axis=-1)
+            u_a_n = tf.stack(u_a_n_stack, axis=-1)
+            n_a_u = tf.stack(n_a_u_stack, axis=-1)
 
             with tf.variable_scope('similarity'):
                 # sim shape [batch, max_sent_len, max_sent_len, 2 * (stack_num + 1)]
-                sim = tf.einsum('biks,bjks->bijs', u_a_r, r_a_u) / tf.sqrt(200.0)
+                sim_ur = tf.einsum('biks,bjks->bijs', u_a_r, r_a_u) / tf.sqrt(200.0)
+                sim_un = tf.einsum('biks,bjks->bijs', u_a_n, n_a_u) / tf.sqrt(200.0)
 
-            self_n = tf.nn.l2_normalize(tf.stack(Hn_stack, axis=-1))  # #for no rp
-            self_u = tf.nn.l2_normalize(tf.stack(Hu_stack, axis=-1))  # #for no rp
+            self_n = tf.nn.l2_normalize(tf.stack(Hn_stack, axis=-1))
+            self_u = tf.nn.l2_normalize(tf.stack(Hu_stack, axis=-1))
             with tf.variable_scope('similarity'):
                 self_sim = tf.einsum('biks,bjks->bijs', self_u, self_n)  # [batch * len * len * stack]
                 self_sim = tf.unstack(self_sim, axis=-1, num=self.num_blocks + 1)
@@ -145,49 +148,58 @@ class ScripteWriter():
                     Hn_stack[i] = tf.einsum('bik,bi->bik', Hn_stack[i], tmp_self_sim)
                     reuse2 = True
 
-            sim_turns.append(sim)
+            Mur.append(sim_ur)
+            Mun.append(sim_un)
 
             if not reuse:
                 reuse = True
 
-        r_a_o_stack = []
-        o_a_r_stack = []
+        r_a_n_stack = []
+        n_a_r_stack = []
         reuse2 = False
         for i in range(self.num_blocks + 1):
             with tf.variable_scope("narrative_attention_response_{}".format(i), reuse=reuse2):
-                o_a_r, _ = multihead_attention(queries=Hn_stack[i], keys=Hr_stack[i], num_units=self.hidden_units, num_heads=self.num_heads, is_training=self.is_training, causality=False)
-                o_a_r = feedforward(o_a_r, num_units=[self.hidden_units, self.hidden_units])
-                o_a_r_stack.append(o_a_r)
+                n_a_r, _ = multihead_attention(queries=Hn_stack[i], keys=Hr_stack[i], num_units=self.hidden_units, num_heads=self.num_heads, is_training=self.is_training, causality=False)
+                n_a_r = feedforward(n_a_r, num_units=[self.hidden_units, self.hidden_units])
+                n_a_r_stack.append(n_a_r)
             with tf.variable_scope("response_attention_narrative_{}".format(i), reuse=reuse2):
-                r_a_o, _ = multihead_attention(queries=Hr_stack[i], keys=Hn_stack[i], num_units=self.hidden_units, num_heads=self.num_heads, is_training=self.is_training, causality=False)
-                r_a_o = feedforward(r_a_o, num_units=[self.hidden_units, self.hidden_units])
-                r_a_o_stack.append(r_a_o)
+                r_a_n, _ = multihead_attention(queries=Hr_stack[i], keys=Hn_stack[i], num_units=self.hidden_units, num_heads=self.num_heads, is_training=self.is_training, causality=False)
+                r_a_n = feedforward(r_a_n, num_units=[self.hidden_units, self.hidden_units])
+                r_a_n_stack.append(r_a_n)
 
-        o_a_r_stack.extend(Hn_stack)
-        r_a_o_stack.extend(Hr_stack)
-        o_a_r = tf.stack(o_a_r_stack, axis=-1)
-        r_a_o = tf.stack(r_a_o_stack, axis=-1)
+        n_a_r_stack.extend(Hn_stack)
+        r_a_n_stack.extend(Hr_stack)
+        n_a_r = tf.stack(n_a_r_stack, axis=-1)
+        r_a_n = tf.stack(r_a_n_stack, axis=-1)
 
         with tf.variable_scope('similarity'):
-            r_o_sim = tf.einsum('biks,bjks->bijs', o_a_r, r_a_o) / tf.sqrt(200.0)
-            self.r_o_sim = r_o_sim
+            Mrn = tf.einsum('biks,bjks->bijs', n_a_r, r_a_n) / tf.sqrt(200.0)
 
-        sim = tf.stack(sim_turns, axis=1)
+        Mur = tf.stack(Mur, axis=1)
+        Mun = tf.stack(Mun, axis=1) 
         with tf.variable_scope('cnn_aggregation'):
-            conv3d = tf.layers.conv3d(sim, filters=32, kernel_size=[3, 3, 3], padding="SAME", activation=tf.nn.elu, kernel_initializer=tf.random_uniform_initializer(-0.01, 0.01), name="conv1")
+            conv3d = tf.layers.conv3d(Mur, filters=32, kernel_size=[3, 3, 3], padding="SAME", activation=tf.nn.elu, kernel_initializer=tf.random_uniform_initializer(-0.01, 0.01), name="conv1")
             pool3d = tf.layers.max_pooling3d(conv3d, pool_size=[3, 3, 3], strides=[3, 3, 3], padding="SAME")
             conv3d2 = tf.layers.conv3d(pool3d, filters=16, kernel_size=[3, 3, 3], padding="SAME", activation=tf.nn.elu, kernel_initializer=tf.random_uniform_initializer(-0.01, 0.01), name="conv2")
             pool3d2 = tf.layers.max_pooling3d(conv3d2, pool_size=[3, 3, 3], strides=[3, 3, 3], padding="SAME")
-            matching_vector = tf.contrib.layers.flatten(pool3d2)
+            mur = tf.contrib.layers.flatten(pool3d2)
+        with tf.variable_scope('cnn_aggregation', reuse=True):
+            conv3d = tf.layers.conv3d(Mun, filters=32, kernel_size=[3, 3, 3], padding="SAME", activation=tf.nn.elu,
+                                      kernel_initializer=tf.random_uniform_initializer(-0.01, 0.01), name="conv1")
+            pool3d = tf.layers.max_pooling3d(conv3d, pool_size=[3, 3, 3], strides=[3, 3, 3], padding="SAME")
+            conv3d2 = tf.layers.conv3d(pool3d, filters=16, kernel_size=[3, 3, 3], padding="SAME", activation=tf.nn.elu,
+                                       kernel_initializer=tf.random_uniform_initializer(-0.01, 0.01), name="conv2")
+            pool3d2 = tf.layers.max_pooling3d(conv3d2, pool_size=[3, 3, 3], strides=[3, 3, 3], padding="SAME")
+            mun = tf.contrib.layers.flatten(pool3d2)
 
         with tf.variable_scope('cnn_aggregation'):
-            conv2d = tf.layers.conv2d(r_o_sim, filters=32, kernel_size=[3, 3], padding="SAME", activation=tf.nn.elu, kernel_initializer=tf.random_uniform_initializer(-0.01, 0.01), name="conv2d")
+            conv2d = tf.layers.conv2d(Mrn, filters=32, kernel_size=[3, 3], padding="SAME", activation=tf.nn.elu, kernel_initializer=tf.random_uniform_initializer(-0.01, 0.01), name="conv2d")
             pool2d = tf.layers.max_pooling2d(conv2d, pool_size=[3, 3], strides=[3, 3], padding="SAME")
             conv2d2 = tf.layers.conv2d(pool2d, filters=16, kernel_size=[3, 3], padding="SAME", activation=tf.nn.elu, kernel_initializer=tf.random_uniform_initializer(-0.01, 0.01), name="conv2d2")
             pool2d2 = tf.layers.max_pooling2d(conv2d2, pool_size=[3, 3], strides=[3, 3], padding="SAME")
-            r_o_matching = tf.contrib.layers.flatten(pool2d2)
+            mrn = tf.contrib.layers.flatten(pool2d2)
 
-        all_vector = tf.concat([matching_vector, r_o_matching], axis=-1)
+        all_vector = tf.concat([mur, mun, mrn], axis=-1)
         logits = tf.reshape(tf.layers.dense(all_vector, 1, kernel_initializer=tf.orthogonal_initializer()), [-1])
 
         self.y_pred = tf.sigmoid(logits)
@@ -526,8 +538,8 @@ def train(load=False, model_path=None):
             epoch += 1
 
 if __name__ == "__main__":
-    os.environ['CUDA_VISIBLE_DEVICES'] = "1"
-    is_train = False
+    os.environ['CUDA_VISIBLE_DEVICES'] = "0"
+    is_train = True
     previous_train_modelpath = "./model/"
     if is_train:
         train(False, previous_train_modelpath)
