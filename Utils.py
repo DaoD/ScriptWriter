@@ -37,11 +37,11 @@ def generate_data_with_random_samples():
     vocab = {}
     positive_data = []
     EOS_ID = 7
-    with open("./data/vocab.txt", "r", encoding="utf-8") as fr:
+    with open("./data/sample_vocab.txt", "r", encoding="utf-8") as fr:
         for idx, line in enumerate(fr):
             line = line.strip().split("\t")
             vocab[line[0]] = idx + 1
-    with open("./data/all_data.txt", "r", encoding="utf-8") as fr:
+    with open("./data/sample_data.txt", "r", encoding="utf-8") as fr:
         tmp = []
         for line in fr:
             line = line.strip()
@@ -176,6 +176,7 @@ def generate_data_with_random_samples():
         label.append(data[3])
     test = [context, response, narrative, label]
     pickle.dump(test, open("./data/test.multi.pkl", "wb"))
+
 
 def generate_data_with_solr_samples():
     # generate negative samples from solr
