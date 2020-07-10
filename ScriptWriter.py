@@ -31,7 +31,7 @@ class ScripteWriter():
         self.initial_learning_rate = 1e-3
         self.dropout_rate = 0
         self.num_heads = 1
-        self.num_blocks = 2
+        self.num_blocks = 3
         # self.gamma = 0.1
         self.gamma = tf.get_variable('gamma', shape=1, dtype=tf.float32, trainable=True, initializer=tf.constant_initializer(0.5))
 
