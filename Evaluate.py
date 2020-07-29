@@ -1,65 +1,5 @@
 import numpy as np
 
-
-def compute_r10_1(scores, labels, count=10):
-    total = 0
-    correct = 0
-    for i in range(len(labels)):
-        if labels[i] == 1:
-            total = total + 1
-            idlist = [x for x in range(count)]
-            state = np.random.get_state()
-            np.random.shuffle(idlist)
-            original_positive_idx = idlist.index(0)
-            sublist = scores[i:i + count]
-            np.random.set_state(state)
-            np.random.shuffle(sublist)
-            top_1_idx = np.argsort(sublist)[-1]
-            if original_positive_idx == top_1_idx:
-                correct = correct + 1
-    return float(correct) / total
-
-
-def compute_r10_2(scores, labels, count=10):
-    total = 0
-    correct = 0
-    for i in range(len(labels)):
-        if labels[i] == 1:
-            total = total + 1
-            idlist = [x for x in range(count)]
-            state = np.random.get_state()
-            np.random.shuffle(idlist)
-            original_positive_idx = idlist.index(0)
-            sublist = scores[i:i + count]
-            np.random.set_state(state)
-            np.random.shuffle(sublist)
-            top_2_idx = np.argsort(sublist)[-2:]
-            top_2_values = [sublist[i] for i in top_2_idx]
-            if original_positive_idx in top_2_idx:
-                correct = correct + 1
-    return float(correct) / total
-
-
-def compute_r10_5(scores, labels, count=10):
-    total = 0
-    correct = 0
-    for i in range(len(labels)):
-        if labels[i] == 1:
-            total = total + 1
-            idlist = [x for x in range(count)]
-            state = np.random.get_state()
-            np.random.shuffle(idlist)
-            original_positive_idx = idlist.index(0)
-            sublist = scores[i:i + count]
-            np.random.set_state(state)
-            np.random.shuffle(sublist)
-            top_5_idx = np.argsort(sublist)[-5:]
-            top_5_values = [sublist[i] for i in top_5_idx]
-            if original_positive_idx in top_5_idx:
-                correct = correct + 1
-    return float(correct) / total
-
-
 def compute_r_n_m(scores, labels, count, at):
     total = 0
     correct = 0
@@ -73,8 +13,7 @@ def compute_r_n_m(scores, labels, count, at):
                 correct += 1
     return float(correct) / total
 
-
-def compute_mrr_2(scores, labels, count=10):
+def compute_mrr(scores, labels, count=10):
     total = 0
     accumulate_mrr = 0
     for i in range(len(labels)):
@@ -86,67 +25,14 @@ def compute_mrr_2(scores, labels, count=10):
             accumulate_mrr += 1 / idx
     return float(accumulate_mrr) / total
 
-
-def compute_mrr(scores, labels, count=10):
-    total = 0
-    accumulate_mrr = 0
-    for i in range(len(labels)):
-        if i % 10 == 0:
-            total = total + 1
-            idlist = [x for x in range(count)]
-            state = np.random.get_state()
-            np.random.shuffle(idlist)
-            original_positive_idx = idlist.index(0)
-            sublist = scores[i:i + count]
-            np.random.set_state(state)
-            np.random.shuffle(sublist)
-            arg_sort = list(np.argsort(sublist)).index(original_positive_idx)
-            idx = len(sublist) - arg_sort
-            accumulate_mrr += 1 / idx
-    return float(accumulate_mrr) / total
-
-
-# def compute_map(scores, labels, count=10):
-#     total = 0
-#     correct = 0
-#     for i in range(len(labels)):
-#         if labels[i] == 1:
-#             total = total + 1
-#             sublist = scores[i:i + count]
-#             if max(sublist) == scores[i]:
-#                 correct = correct + 1
-#     return float(correct) / total
-
-
-def compute_r2_1(scores, labels, count=2):
-    total = 0
-    correct = 0
-    for i in range(len(labels)):
-        if labels[i] == 1:
-            total = total + 1
-            idlist = [x for x in range(count)]
-            state = np.random.get_state()
-            np.random.shuffle(idlist)
-            original_positive_idx = idlist.index(0)
-            sublist = scores[i:i + count]
-            np.random.set_state(state)
-            np.random.shuffle(sublist)
-            top_1_idx = np.argsort(sublist)[-1]
-            if original_positive_idx == top_1_idx:
-                correct = correct + 1
-    return float(correct) / total
-
-
 def compute_acc(scores, labels):
     scores = (np.asarray(scores) > 0.5).astype(np.int32)
     accuracy = sum((scores == labels).astype(np.int32)) / len(labels)
     return accuracy
 
-
 def evaluate_all(scores, labels):
     return compute_acc(scores, labels), compute_r_n_m(scores, labels, 2, 1), compute_r_n_m(scores, labels, 10, 1), compute_r_n_m(scores, labels, 10, 2), \
-           compute_r_n_m(scores, labels, 10, 5), compute_mrr_2(scores, labels)
-
+           compute_r_n_m(scores, labels, 10, 5), compute_mrr(scores, labels)
 
 def evaluate_all_from_file(path):
     scores = []
