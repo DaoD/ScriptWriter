@@ -31,7 +31,7 @@ If you use the code and datasets, please cite the following paper:
     author = "Zhu, Yutao  and
       Song, Ruihua  and
       Dou, Zhicheng  and
-      NIE, Jian-Yun  and
+      Nie, Jian-Yun  and
       Zhou, Jin",
     booktitle = "Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics",
     month = jul,
