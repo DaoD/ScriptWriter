@@ -14,7 +14,7 @@ It is appealing to have a system that generates a story or scripts automatically
 Authors: Yutao Zhu, Ruihua Song, Zhicheng Dou, Jian-Yun Nie, Jin Zhou
 
 ## Requirements
-I test the code with the following packages. Other versions may also work, but I'm not sure. <br>
+We test the code with the following packages. <br>
 - Python 3.5 <br>
 - Tensorflow 1.5 (with GPU support)<br>
 - Keras 2.2.4 <br>
