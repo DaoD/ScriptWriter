@@ -21,7 +21,7 @@ We test the code with the following packages. <br>
 - Keras 2.2.4 <br>
 
 ## Usage
-- Unzip the compressed [data file](https://drive.google.com/file/d/1l7DoWeWmJyhAhq74RItV4w6jbpstoZ74/view?usp=sharing) to the data directory. <br>
+- Unzip the compressed [data file](https://drive.google.com/file/d/1fJKI9fzUhPM2dKq2zAFWLbtltv6PT2wh/view?usp=sharing) to the data directory. <br>
 - Python3 ScriptWriter.py
 
 ## Citations
