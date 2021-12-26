@@ -22,7 +22,21 @@ We test the code with the following packages. <br>
 
 ## Usage
 - Unzip the compressed [data file](https://drive.google.com/file/d/1fJKI9fzUhPM2dKq2zAFWLbtltv6PT2wh/view?usp=sharing) to the data directory. <br>
-- Python3 ScriptWriter.py
+- python3 ScriptWriter.py (or python3 ScriptWriter-CPre.py)
+
+## Results
+| Model             | R2@1  | R10@1 | R10@2 | R10@5 | MRR   | P_strict | P_weak | 
+| ----------------- | ----- | ----- | ----- | ----- | ----- | -------- | ------ |
+| MVLSTM            | 0.651 | 0.217 | 0.384 | 0.732 | 0.395 | 0.198    | 0.224  |
+| DL2R              | 0.643 | 0.210 | 0.321 | 0.638 | 0.314 | 0.230    | 0.243  |
+| SMN               | 0.641 | 0.176 | 0.333 | 0.696 | 0.392 | 0.197    | 0.236  |
+| DAM               | 0.631 | 0.240 | 0.398 | 0.733 | 0.408 | 0.226    | 0.236  |
+| DUA               | 0.654 | 0.237 | 0.403 | 0.736 | 0.396 | 0.223    | 0.251  |
+| IMN               | 0.686 | 0.301 | 0.450 | 0.759 | 0.463 | 0.304    | 0.325  |
+| IOI               | 0.710 | 0.341 | 0.491 | 0.774 | 0.464 | 0.324    | 0.337  |
+| MSN               | 0.724 | 0.329 | 0.511 | 0.794 | 0.464 | 0.314    | 0.346  |
+| ScriptWriter      | 0.730 | 0.365 | 0.537 | 0.814 | 0.503 | 0.373    | 0.383  |
+| ScriptWriter-CPre | 0.756 | 0.398 | 0.557 | 0.817 | 0.504 | 0.392    | 0.409  | 
 
 ## Citations
 If you use the code and datasets, please cite the following paper:  
