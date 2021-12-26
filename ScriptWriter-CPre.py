@@ -1,7 +1,7 @@
 from modules import *
 from keras.preprocessing.sequence import pad_sequences
-import BaselineUtils
-import BaselineEvaluate
+import Utils
+import Evaluate
 import pickle
 import os
 from tqdm import tqdm
@@ -290,13 +290,13 @@ def evaluate(model_path, eval_file, output_path, eta):
     with open(output_path + "test.result.micro_session.txt", "w") as fw:
         for sc in all_candidate_scores.tolist():
             fw.write(str(sc) + "\n")
-    return BaselineEvaluate.evaluate_all(all_candidate_scores, y_true), test_loss / step, all_candidate_scores.tolist()
+    return Evaluate.evaluate_all(all_candidate_scores, y_true), test_loss / step, all_candidate_scores.tolist()
 
 
 def simple_evaluate(sess, model, eval_file):
     with open(eval_file, 'rb') as f:
         utterance, response, narrative, y_true = pickle.load(f)
-    utterance, utterance_len = BaselineUtils.multi_sequences_padding(utterance, max_sentence_len, max_num_utterance=max_num_utterance)
+    utterance, utterance_len = Utils.multi_sequences_padding(utterance, max_sentence_len, max_num_utterance=max_num_utterance)
     utterance = np.array(utterance)
     narrative = np.array(pad_sequences(narrative, padding='post', maxlen=max_sentence_len))
     response = np.array(pad_sequences(response, padding='post', maxlen=max_sentence_len))
@@ -329,7 +329,7 @@ def simple_evaluate(sess, model, eval_file):
     except tf.errors.OutOfRangeError:
         pass
     all_candidate_scores = np.concatenate(all_candidate_scores, axis=0)
-    return BaselineEvaluate.evaluate_all(all_candidate_scores, y_true), test_loss / step, all_candidate_scores.tolist()
+    return Evaluate.evaluate_all(all_candidate_scores, y_true), test_loss / step, all_candidate_scores.tolist()
 
 
 def evaluate_multi_turns(test_file, model_path, output_path):
@@ -516,7 +516,7 @@ def train(eta=0.5, load=False, model_path=None, logger=None):
                             except tf.errors.OutOfRangeError:
                                 pass
                             all_candidate_scores = np.concatenate(all_candidate_scores, axis=0)
-                            result = BaselineEvaluate.evaluate_all(all_candidate_scores, y_true_val)
+                            result = Evaluate.evaluate_all(all_candidate_scores, y_true_val)
                             if result[0] + result[1] + result[2] + result[3] + result[4] > best_result[0] + best_result[1] + best_result[2] + best_result[3] + best_result[4]:
                                 best_result = result
                                 tqdm.write("Current best result on validation set: r2@1 %.3f, r10@1 %.3f, r10@2 %.3f, r10@5 %.3f, mrr %.3f" % (best_result[0], best_result[1], best_result[2], best_result[3], best_result[4]))
@@ -551,7 +551,7 @@ def train(eta=0.5, load=False, model_path=None, logger=None):
             except tf.errors.OutOfRangeError:
                 pass
             all_candidate_scores = np.concatenate(all_candidate_scores, axis=0)
-            result = BaselineEvaluate.evaluate_all(all_candidate_scores, y_true_val)
+            result = Evaluate.evaluate_all(all_candidate_scores, y_true_val)
             if result[0] + result[1] + result[2] + result[3] + result[4] > best_result[0] + best_result[1] + best_result[2] + best_result[3] + best_result[4]:
                 best_result = result
                 tqdm.write("Current best result on validation set: r2@1 %.3f, r10@1 %.3f, r10@2 %.3f, r10@5 %.3f, mrr %.3f" % (best_result[0], best_result[1], best_result[2], best_result[3], best_result[4]))
@@ -583,8 +583,8 @@ if __name__ == "__main__":
 
     # to evaluate multi-turn results, the vocab file is needed
     # evaluate_multi_turns(test_file=evaluate_file, model_path=save_path, output_path=result_path)
-    # BaselineEvaluate.recover_and_show(result_path)
+    # Evaluate.recover_and_show(result_path)
     # test_file = result_path + "test.result.multi.txt"
     # gold_file = "../data/ground_truth.result.mul.txt"
-    # BaselineEvaluate.evaluate_multi_turn_result(test_file, gold_file)
+    # Evaluate.evaluate_multi_turn_result(test_file, gold_file)
 
