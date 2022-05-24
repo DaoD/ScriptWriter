@@ -62,8 +62,9 @@ If you use the code and datasets, please cite the following paper:
     author = {Zhu, Yutao and 
         Song, Ruihua and 
         Nie, Jian-Yun and 
-        Du, Pan and Dou, Zhicheng 
-        and Zhou, Jin},
+        Du, Pan and 
+        Dou, Zhicheng and
+        Zhou, Jin},
     year = {2022},
     issue_date = {October 2022},
     publisher = {Association for Computing Machinery},
