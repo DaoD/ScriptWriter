@@ -43,18 +43,40 @@ We test the code with the following packages. <br>
 If you use the code and datasets, please cite the following paper:  
 ```
 @inproceedings{zhu-etal-2020-scriptwriter,
-    title = "{S}cript{W}riter: Narrative-Guided Script Generation",
-    author = "Zhu, Yutao  and
-      Song, Ruihua  and
-      Dou, Zhicheng  and
-      Nie, Jian-Yun  and
-      Zhou, Jin",
-    booktitle = "Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics",
+    title = {{S}cript{W}riter: Narrative-Guided Script Generation},
+    author = {Zhu, Yutao  and
+        Song, Ruihua  and
+        Dou, Zhicheng  and
+        Nie, Jian-Yun  and
+        Zhou, Jin},
+    booktitle = {Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics},
     month = jul,
-    year = "2020",
-    address = "Online",
-    publisher = "Association for Computational Linguistics",
-    url = "https://www.aclweb.org/anthology/2020.acl-main.765",
-    pages = "8647--8657"
+    year = {2020},
+    address = {Online},
+    publisher = {Association for Computational Linguistics},
+    url = {https://www.aclweb.org/anthology/2020.acl-main.765},
+    pages = {8647--8657}
 }
+@article{zhu-etal-2022-leverage,
+    title = {Leveraging Narrative to Generate Movie Script},
+    author = {Zhu, Yutao and 
+        Song, Ruihua and 
+        Nie, Jian-Yun and 
+        Du, Pan and Dou, Zhicheng 
+        and Zhou, Jin},
+    year = {2022},
+    issue_date = {October 2022},
+    publisher = {Association for Computing Machinery},
+    address = {New York, NY, USA},
+    volume = {40},
+    number = {4},
+    issn = {1046-8188},
+    url = {https://doi.org/10.1145/3507356},
+    doi = {10.1145/3507356},
+    journal = {ACM Trans. Inf. Syst.},
+    month = {mar},
+    articleno = {86},
+    numpages = {32}
+}
+
 ```
